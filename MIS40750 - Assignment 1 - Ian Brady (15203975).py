@@ -40,3 +40,22 @@ def route_distances (locations_a, locations_b):
             #In this case 3 extra columns will be created for each port. 3 x values for each row i
             locations_a.set_value(i,'to port (%d)'% j, x)
     print(locations_a)
+    
+#function that checks 2 values, returns true if second is less than the first
+def shorter_route(distance1, distance2):
+    if distance2 < distance1:
+        return True
+    else:
+        return False
+
+#function that calculates and returns profit amount per route
+def profit_per_route(distance, production, cost_per_dist, price_per_piece, limit):
+    #limit = demand limit or transport capability limit - used if all of production will not/can not be transported 
+    if production > limit:
+        cost = distance * cost_per_dist * limit
+        sales_value = limit * price_per_piece
+    else:
+        cost = distance * cost_per_dist * production
+        sales_value = production * price_per_piece
+    profit = sales_value - cost
+    return profit
