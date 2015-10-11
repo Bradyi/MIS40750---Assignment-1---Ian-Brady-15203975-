@@ -1,0 +1,43 @@
+MIS40750 – Assignment 1
+Ian Brady (15203975)
+October 2015
+
+Aim: Minimize total road transportation costs
+As it is only road transportation costs that will determine where the plant is built there are many other factors that don’t need to be considered, including:
+	-Cost of land where plant is to be built
+	-Shipping costs and where the product is being shipped to
+	-Location of existing plants
+The only information given that will help determine these costs is the co-ordinates of raw material and port locations. 
+As no road/infrastructure/traffic/toll information is provided, I will calculate the shortest distance between each raw material location and port, and assume 
+that this will determine the costs. I will use the Distance between two points/length of a line formula: SQRT((x2-x1)^2+(y2-y1)^2) in doing so.
+
+Process:
+I firstly used the Command Prompt to take a quick look at the renewable.db database. I ran ‘.tables’ to find two tables named locations and ports. In Spyder, 
+I imported sqlite3 and pandas libraries to read in the database, and store it to a dataframe, respectively. I then created the following five functions.
+
+distance
+Takes in two points (two x values, two y values) and calculates the distance using the above equation.
+
+route_distances
+This takes in two dataframes, which will be locations and ports in this case, and iterates through both. Starting at the first row of locations, i.e. the first 
+location, it calculates the distance between it and each of the three ports. A column is created for each port to store its distance to each. The process is 
+repeated for each plant.
+
+shorter_route
+A function to determine which of two routes is shorter in distance.
+
+profit_per_route
+As the production levels are given for each location, I decided to use them in an attempt to calculate which plant to port route would generate more profit. 
+(Assuming that there is a fixed cost rate per unit produced per unit of distance travelled and a selling price per unit, with profit equalling to sales value 
+minus the cost. I did this with the expectation that the shortest route would not necessarily be the most profitable. I also incorporated a limit parameter that 
+could be used if the demand or transportation capabilities were expected to be less than the units produced.)
+
+route_analysis
+This function iterates through each row of the updated locations table. At each row it then iterates through the last three columns giving the distance between 
+the plant and each port. It calls upon the shorter_route and profit_per_route functions to determine the lowest costing route, and i.e. where the plant should be 
+built.
+
+Findings:
+The plant should be built at Raw Material Location 4 which is closet to port 2. As it happens, most units are also produced at this location. Therefore, this will 
+always be the most profitable route, given the implemented standard costs/sales value, and my analysis of such was not needed. However, this may be useful in other 
+circumstances.
